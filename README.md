@@ -16,9 +16,9 @@ Create a bot. Add it to your server with message send
 and read message history permissions. Set the environment variable `DISCORD_TOKEN` to a bot token with those permissions.
 
 
-Build the database of messages (currently supports only one channel, but you could run it again with a different channel ID). Is rate-limited, so it will take a while.
+Build the database of channel messages. Run with as many channels as you want, separated by spaces; run again to update database. Is rate-limited, so it will take a while.
 ``` sh
-python3 build_msg_db.py CHANNEL_ID_TO_READ_MESSAGES_FROM
+python3 build_msg_db.py CHANNEL_ID_TO_READ_MESSAGES_FROM_1 CHANNEL_ID_TO_READ_MESSAGES_FROM_2... 
 ```
 
 Build the markov chains and serialize in the `chains/` directory.
@@ -36,4 +36,10 @@ python3 test_markov.py USER_ID
 Run the bot:
 ``` sh
 python3 run_bot.py ONLY_CHANNEL_ID_TO_READ_AND_SEND_TO
+```
+
+To queue up a bot message, @mention the bot in discord as well as 1 or 2 other members of the guild.
+``` sh
+@Markov-bot @michaelm
+@Markov-bot @michaelm @dresser
 ```
