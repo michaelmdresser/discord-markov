@@ -9,7 +9,7 @@ Generate bad clones of the denizens of your Discord server
 
 Dependencies:
 ``` sh
-pip3 install markovify
+pip3 install markovify discord
 ```
 
 Create a bot. Add it to your server with message send
