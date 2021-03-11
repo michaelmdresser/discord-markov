@@ -72,8 +72,8 @@ async def on_message(message):
         if not path.exists(serialized_secondary):
             print("target %s for message %s doesn't exist" % (serialized_secondary, message))
             return
-        output_message = "" + targetID + ": " + generate_message(serialized_target) + '\n' + "" + secondaryID + ": " + generate_message(serialized_secondary)
-        output_message += "\n" + targetID + ": " + generate_message(serialized_target) + '\n' + "" + secondaryID + ": " + generate_message(serialized_secondary)
+        output_message = "" + targetID + ":\n\t" + generate_message(serialized_target) + '\n\n' + "" + secondaryID + ":\n\t" + generate_message(serialized_secondary)
+        output_message += "\n\n" + targetID + ":\n\t" + generate_message(serialized_target) + '\n\n' + "" + secondaryID + ":\n\t" + generate_message(serialized_secondary)
     await message.channel.send(output_message, allowed_mentions=discord.AllowedMentions(everyone=False, users=False, roles=False, replied_user=False))
 
 client.run(os.environ['DISCORD_TOKEN'])
