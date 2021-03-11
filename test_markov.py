@@ -1,7 +1,7 @@
 import markovify
 import sys
 
-user_id = sys.argv[1]
+user_id = int(sys.argv[1])
 
 model = None
 

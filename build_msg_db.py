@@ -8,7 +8,7 @@ import sys
 # currently only supports building db
 # from a single channel, though this could
 # easily be extended
-general_channel_id = sys.argv[1]
+general_channel_id = int(sys.argv[1])
 
 client = discord.Client()
 

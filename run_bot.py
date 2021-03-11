@@ -7,7 +7,7 @@ import sys
 client = discord.Client()
 
 # the channel id to restrict sending messages to
-botspam_channel_id = sys.argv[1]
+botspam_channel_id = int(sys.argv[1])
 
 @client.event
 async def on_message(message):
