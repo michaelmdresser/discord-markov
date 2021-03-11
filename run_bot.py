@@ -62,8 +62,8 @@ async def on_message(message):
         # if you would like mentions instead of nicknames, uncomment these two lines and comment the two after them.
         # targetID = '<@'+str(target.id)+'>'
         # secondaryID = '<@'+str(secondary.id)+'>'
-        targetID = target.nick
-        secondaryID = secondary.nick
+        targetID = target.display_name
+        secondaryID = secondary.display_name
         serialized_target = "chains/%s" % target.id
         serialized_secondary = "chains/%s" % secondary.id
         if not path.exists(serialized_target):
@@ -72,6 +72,7 @@ async def on_message(message):
         if not path.exists(serialized_secondary):
             print("target %s for message %s doesn't exist" % (serialized_secondary, message))
             return
+        # print(targetID, " ", secondaryID, " ")
         output_message = "" + targetID + ":\n\t" + generate_message(serialized_target) + '\n\n' + "" + secondaryID + ":\n\t" + generate_message(serialized_secondary)
         output_message += "\n\n" + targetID + ":\n\t" + generate_message(serialized_target) + '\n\n' + "" + secondaryID + ":\n\t" + generate_message(serialized_secondary)
     await message.channel.send(output_message, allowed_mentions=discord.AllowedMentions(everyone=False, users=False, roles=False, replied_user=False))
