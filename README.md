@@ -37,3 +37,5 @@ Run the bot:
 ``` sh
 python3 run_bot.py ONLY_CHANNEL_ID_TO_READ_AND_SEND_TO
 ```
+
+you're cute
