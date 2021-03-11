@@ -18,7 +18,7 @@ and read message history permissions. Set the environment variable `DISCORD_TOKE
 
 Build the database of messages (currently supports only one channel, but you could run it again with a different channel ID). Is rate-limited, so it will take a while.
 ``` sh
-python3 build_message_db.py CHANNEL_ID_TO_READ_MESSAGES_FROM
+python3 build_msg_db.py CHANNEL_ID_TO_READ_MESSAGES_FROM
 ```
 
 Build the markov chains and serialize in the `chains/` directory.
