@@ -9,7 +9,11 @@ client = discord.Client()
 # the channel id to restrict sending messages to
 botspam_channel_id = int(sys.argv[1])
 
-def generate_message(serialized_user):
+def generate_message(targetID):
+    serialized_user = "chains/%s" % targetID
+    if not path.exists(serialized_user):
+        print("target %s for message %s doesn't exist" % (serialized_user, message))
+        return str("target %s for message %s doesn't exist" % (serialized_user, message))
     model = None
     with open(serialized_user) as f:
         json = f.readlines()[0]
@@ -44,37 +48,19 @@ async def on_message(message):
         target = message.mentions[1]
         if target == client.user:
             target = message.mentions[0]
-        serialized_target = "chains/%s" % target.id
-        if not path.exists(serialized_target):
-            print("target %s for message %s doesn't exist" % (serialized_target, message))
-            return
-        output_message = generate_message(serialized_target)
+        output_message = generate_message(target.id)
     else:
-        if message.mentions[0] == client.user:
-            target = message.mentions[1]
-            secondary = message.mentions[2]
-        elif message.mentions[1] == client.user:
-            target = message.mentions[0]
-            secondary = message.mentions[2]
-        else:
-            target = message.mentions[0]
-            secondary = message.mentions[2]
+        filtered_message = filter(lambda x: x != client.user, message.mentions)
+        target = next(filtered_message, None)
+        secondary = next(filtered_message, None)
         # if you would like mentions instead of nicknames, uncomment these two lines and comment the two after them.
         # targetID = '<@'+str(target.id)+'>'
         # secondaryID = '<@'+str(secondary.id)+'>'
         targetID = target.display_name
         secondaryID = secondary.display_name
-        serialized_target = "chains/%s" % target.id
-        serialized_secondary = "chains/%s" % secondary.id
-        if not path.exists(serialized_target):
-            print("target %s for message %s doesn't exist" % (serialized_target, message))
-            return
-        if not path.exists(serialized_secondary):
-            print("target %s for message %s doesn't exist" % (serialized_secondary, message))
-            return
         # print(targetID, " ", secondaryID, " ")
-        output_message = "" + targetID + ":\n\t" + generate_message(serialized_target) + '\n\n' + "" + secondaryID + ":\n\t" + generate_message(serialized_secondary)
-        output_message += "\n\n" + targetID + ":\n\t" + generate_message(serialized_target) + '\n\n' + "" + secondaryID + ":\n\t" + generate_message(serialized_secondary)
+        output_message = "" + targetID + ":\n\t" + generate_message(target.id) + '\n\n' + "" + secondaryID + ":\n\t" + generate_message(secondary.id)
+        output_message += "\n\n" + targetID + ":\n\t" + generate_message(target.id) + '\n\n' + "" + secondaryID + ":\n\t" + generate_message(secondary.id)
     await message.channel.send(output_message, allowed_mentions=discord.AllowedMentions(everyone=False, users=False, roles=False, replied_user=False))
 
 client.run(os.environ['DISCORD_TOKEN'])

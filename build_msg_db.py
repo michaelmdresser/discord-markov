@@ -4,8 +4,6 @@ import time
 import os
 import sys
 
-# channel IDs to read messages from, separated by spaces
-
 client = discord.Client()
 
 async def build_db_for_channel(list_of_channels):
@@ -31,20 +29,21 @@ async def build_db_for_channel(list_of_channels):
         print("getting channel ", channel_id)
         channel = client.get_channel(channel_id)
         if channel is None:
-            raise Exception("channel is none")
-        processed = 0
-        async for message in channel.history(limit=None):
-            if processed % 1000 == 0:
-                print("Processed:", processed)
-                duration = time.time() - start
-                print("Duration:", duration)
-                print()
-            cur.execute('INSERT INTO messages VALUES (?, ?, ?, ?)',
+            raise Exception("Error with channel ID ", str(channel_id))
+        else:
+            processed = 0
+            async for message in channel.history(limit=None):
+                if processed % 1000 == 0:
+                    print("Processed:", processed)
+                    duration = time.time() - start
+                    print("Duration:", duration)
+                    print()
+                cur.execute('INSERT INTO messages VALUES (?, ?, ?, ?)',
                         (message.channel.id, message.author.id, message.id, message.content))
-            processed += 1
-        con.commit()
-        total += processed
-        print("finished getting messages from channel ", channel_id, ", total processed ", processed)
+                processed += 1
+            con.commit()
+            total += processed
+            print("finished getting messages from channel ", channel_id, ", total processed ", processed)
     duration = time.time() - start
     print("Total processed:", total)
     print("Final duration:", duration)
@@ -52,5 +51,8 @@ async def build_db_for_channel(list_of_channels):
 
 # https://stackoverflow.com/questions/63846749/how-to-send-message-without-command-or-event-discord-py
 # once the task is done, you can ctrl-c this process
-client.loop.create_task(build_db_for_channel(sys.argv))
-client.run(os.environ["DISCORD_TOKEN"])
+if len(sys.argv >=1):
+    client.loop.create_task(build_db_for_channel(sys.argv))
+    client.run(os.environ["DISCORD_TOKEN"])
+else:
+    print("No channels were input in Command Line")
