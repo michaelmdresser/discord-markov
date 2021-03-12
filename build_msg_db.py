@@ -51,7 +51,7 @@ async def build_db_for_channel(list_of_channels):
 
 # https://stackoverflow.com/questions/63846749/how-to-send-message-without-command-or-event-discord-py
 # once the task is done, you can ctrl-c this process
-if len(sys.argv >=1):
+if len(sys.argv) >=1:
     client.loop.create_task(build_db_for_channel(sys.argv))
     client.run(os.environ["DISCORD_TOKEN"])
 else:
